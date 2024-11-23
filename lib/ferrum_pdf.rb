@@ -40,18 +40,18 @@ module FerrumPdf
         if html
           page.content = html
           page.network.wait_for_idle
-          sleep(2)
+          sleep(7)
         else
           page.go_to(url)
-          sleep(2)
+          sleep(7)
         end
-sleep(2)
+sleep(7)
         # page.evaluate <<~JS
         # Object.keys(Chartkick.charts).forEach(function (key) {
               # Chartkick.charts[key].redraw();
           # });
         # JS
-        sleep(2)
+        sleep(7)
         yield page
       end
     rescue Ferrum::DeadBrowserError
