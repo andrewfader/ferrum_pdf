@@ -38,7 +38,7 @@ module FerrumPdf
         page.network.authorize(user: authorize[:user], password: authorize[:password]) { |req| req.continue } if authorize
         sleep(2)
         if html
-          page.content = FerrumPdf::HTMLPreprocessor.process(html, host, protocol)
+          page.content = html
           page.network.wait_for_idle
           sleep(2)
         else
