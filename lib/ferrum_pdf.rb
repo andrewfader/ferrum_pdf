@@ -34,7 +34,7 @@ module FerrumPdf
     end
 
     def render(host:, protocol:, html: nil, url: nil, authorize: nil)
-      browser(headless: :new).create_page do |page|
+      browser(headless: false).create_page do |page|
         page.network.authorize(user: authorize[:user], password: authorize[:password]) { |req| req.continue } if authorize
         sleep(2)
         if html
@@ -46,11 +46,11 @@ module FerrumPdf
           sleep(2)
         end
 sleep(2)
-        page.evaluate <<~JS
-        Object.keys(Chartkick.charts).forEach(function (key) {
-              Chartkick.charts[key].redraw();
-          });
-        JS
+        # page.evaluate <<~JS
+        # Object.keys(Chartkick.charts).forEach(function (key) {
+              # Chartkick.charts[key].redraw();
+          # });
+        # JS
         sleep(2)
         yield page
       end
