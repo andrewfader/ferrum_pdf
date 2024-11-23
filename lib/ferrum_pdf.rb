@@ -21,7 +21,7 @@ module FerrumPdf
     end
 
     def render_pdf(html: nil, url: nil, host: nil, protocol: nil, authorize: nil, pdf_options: {})
-      sleep(1)
+      sleep(2)
       render(host: host, protocol: protocol, html: html, url: url, authorize: authorize) do |page|
         page.pdf(**pdf_options.with_defaults(encoding: :binary))
       end
@@ -34,16 +34,24 @@ module FerrumPdf
     end
 
     def render(host:, protocol:, html: nil, url: nil, authorize: nil)
-      browser.create_page do |page|
+      browser(headless: new, js_errors: true).create_page do |page|
         page.network.authorize(user: authorize[:user], password: authorize[:password]) { |req| req.continue } if authorize
-        sleep(1)
+        sleep(2)
         if html
           page.content = FerrumPdf::HTMLPreprocessor.process(html, host, protocol)
           page.network.wait_for_idle
+          sleep(2)
         else
           page.go_to(url)
+          sleep(2)
         end
-        sleep(1)
+sleep(2)
+        page.evaluate <<~JS
+        Object.keys(Chartkick.charts).forEach(function (key) {
+              Chartkick.charts[key].redraw();
+          });
+        JS
+        sleep(2)
         yield page
       end
     rescue Ferrum::DeadBrowserError
