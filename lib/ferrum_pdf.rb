@@ -40,6 +40,7 @@ module FerrumPdf
           page.network.wait_for_idle
         else
           page.go_to(url)
+          sleep(0.5)
         end
         yield page
       end
