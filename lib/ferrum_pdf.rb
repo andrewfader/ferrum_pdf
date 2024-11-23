@@ -34,24 +34,18 @@ module FerrumPdf
     end
 
     def render(host:, protocol:, html: nil, url: nil, authorize: nil)
-      browser(headless: false).create_page do |page|
+      browser(headless: :new).create_page do |page|
         page.network.authorize(user: authorize[:user], password: authorize[:password]) { |req| req.continue } if authorize
-        sleep(2)
+        sleep(1)
         if html
-          page.content = html
+          page.content = FerrumPdf::HTMLPreprocessor.process(html, host, protocol)
           page.network.wait_for_idle
-          sleep(7)
+          sleep(1)
         else
           page.go_to(url)
-          sleep(7)
+          sleep(1)
         end
-sleep(7)
-        # page.evaluate <<~JS
-        # Object.keys(Chartkick.charts).forEach(function (key) {
-              # Chartkick.charts[key].redraw();
-          # });
-        # JS
-        sleep(7)
+        sleep(1)
         yield page
       end
     rescue Ferrum::DeadBrowserError
