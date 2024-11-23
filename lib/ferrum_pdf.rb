@@ -34,7 +34,7 @@ module FerrumPdf
     end
 
     def render(host:, protocol:, html: nil, url: nil, authorize: nil)
-      browser(headless: :new, js_errors: true).create_page do |page|
+      browser(headless: :new).create_page do |page|
         page.network.authorize(user: authorize[:user], password: authorize[:password]) { |req| req.continue } if authorize
         sleep(2)
         if html
