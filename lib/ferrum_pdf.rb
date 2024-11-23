@@ -66,7 +66,7 @@ module FerrumPdf
         else
           page.go_to(url)
         end
-        sleep(0.5)
+        sleep(1.5)
         yield page
       end
     end
