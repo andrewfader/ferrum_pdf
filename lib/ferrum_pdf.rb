@@ -40,8 +40,8 @@ module FerrumPdf
           page.network.wait_for_idle
         else
           page.go_to(url)
-          sleep(0.5)
         end
+        sleep(0.3)
         yield page
       end
     rescue Ferrum::DeadBrowserError
