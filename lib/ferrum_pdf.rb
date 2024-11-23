@@ -41,7 +41,7 @@ module FerrumPdf
         else
           page.go_to(url)
         end
-        sleep(0.3)
+        sleep(1)
         yield page
       end
     rescue Ferrum::DeadBrowserError
