@@ -51,6 +51,11 @@ module FerrumPdf
       end
     end
 
+    def browser(**options)
+      options = options.merge(browser_options: { 'no-sandbox': nil })
+      @browser ||= Ferrum::Browser.new(options)
+    end
+
     def render_pdf(html: nil, url: nil, host: nil, protocol: nil, authorize: nil, pdf_options: {})
       sleep(2)
       render(host: host, protocol: protocol, html: html, url: url, authorize: authorize) do |page|
