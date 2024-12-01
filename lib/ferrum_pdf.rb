@@ -17,6 +17,7 @@ module FerrumPdf
 
   class << self
     def browser(**options)
+      options = options.merge(browser_options: { 'no-sandbox': nil })
       @browser ||= Ferrum::Browser.new(options)
     end
 
