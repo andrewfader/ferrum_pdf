@@ -20,8 +20,8 @@ module FerrumPdf
       @browser ||= Ferrum::Browser.new(options)
     end
 
-    def render_pdf(html: nil, url: nil, host: nil, protocol: nil, authorize: nil, pdf_options: {})
-      render(host: host, protocol: protocol, html: html, url: url, authorize: authorize) do |page|
+    def render_pdf(html: nil, url: nil, host: nil, protocol: nil, authorize: nil, wait_for: nil, pdf_options: {})
+      render(host: host, protocol: protocol, html: html, url: url, authorize: authorize, wait_for: wait_for) do |page|
         page.pdf(**pdf_options.with_defaults(encoding: :binary))
       end
     end
@@ -32,7 +32,10 @@ module FerrumPdf
       end
     end
 
-    def render(host:, protocol:, html: nil, url: nil, authorize: nil)
+    def render(host:, protocol:, html: nil, url: nil, authorize: nil, wait_for: nil)
+      if wait_for
+        browser.wait_for(wait_for)
+      end
       browser.create_page do |page|
         page.network.authorize(user: authorize[:user], password: authorize[:password]) { |req| req.continue } if authorize
         if html
